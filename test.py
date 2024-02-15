@@ -3,12 +3,15 @@ from src.classes.shapes import Rect
 import os
 from config import pieces,size,arr2d
 import chess
+from src.classes.controller import Controller
 
+
+controller = Controller()
 
 
 fen = 'r6k/pp2r2p/4Rp1Q/3p4/8/1N1P2R1/PqP2bPP/7K b - - 0 24'
 
-board = chess.Board(fen)
+controller.board = chess.Board(fen)
 pygame.init() 
 
 
@@ -23,15 +26,17 @@ pygame.display.set_caption("Chess")
 
 
 
-list_of_objs = list()
+controller.grid = list()
 
 for i in range(8):
 	for j in range(8):
 		if (i+j)%2==0:
-			list_of_objs.append(Rect(size,size,i*size,j*size,(255,255,255)))
+			controller.grid.append(Rect(size,size,i*size,j*size,'white',(255,255,255)))
 		else:
-			list_of_objs.append(Rect(size,size,i*size,j*size,(150,150,150)))
+			controller.grid.append(Rect(size,size,i*size,j*size,'black',(150,150,150)))
 
+# controller.grid[0].activate()
+# controller.grid[1].activate()
 
 pyimgs = dict()
 
@@ -51,9 +56,9 @@ ap = list()
 exit = False
 while not exit: 
 	canvas.fill(color)
-	for i in list_of_objs:
+	for i in controller.grid:
 		i.draw(canvas)
-	pos = arr2d(board.__str__())
+	pos = arr2d(controller.board.__str__())
 	for i in range(8):
 		for j in range(8):
 			if pos[i][j]!= '.':
